@@ -18,7 +18,7 @@ class LogObserverDaemon(Daemon):
         f = open("/tmp/logObserverDaemonLog.log", 'a')
         while True:
             try:
-                try:
+                """try:
                     # setup django + settings to work with ...
                     from django.core.management import setup_environ
                     import alogator.settings as gSettings
@@ -28,7 +28,9 @@ class LogObserverDaemon(Daemon):
                 except ImportError:
                     hasSettings = False
                 time.sleep(settings.OBSERVER_SLEEP_TIME)
-
+                """
+                time.sleep(10)
+                
                 from .logwatch import logWatcher
                 logWatcher()
             except Exception, ex:
