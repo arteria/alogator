@@ -1,0 +1,9 @@
+include AUTHORS
+include LICENSE
+include DESCRIPTION
+include CHANGELOG.txt
+include README.md
+graft alogator
+global-exclude *.orig *.pyc *.log *.swp
+prune alogator/tests/coverage
+prune alogator/.ropeproject
