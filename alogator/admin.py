@@ -1,11 +1,22 @@
-"""Admin classes for the alogator app."""
-# from django.contrib import admin
+from django.contrib import admin
 
-# from . import models
+from .models import *
 
 
-# class YourModelAdmin(admin.ModelAdmin):
-#    list_display = ['some', 'fields', ]
-#    search_fields = ['some', 'fieds', ]
+class LogFileAdmin(admin.ModelAdmin):
+    list_display = ('path', 'lastModified')
+    date_hierarchy = 'lastModified'
+    readonly_fields = ('lastModified', 'lastPosition', 'lastSize', )
 
-# admin.site.register(models.YourModel, YourModelAdmin)
+
+class LogActorAdmin(admin.ModelAdmin):
+    list_display = ('email', 'active', 'mute')
+    list_filter = ('active', 'mute')
+
+
+class LogSensorAdmin(admin.ModelAdmin):
+    list_display = ('pattern', 'caseSensitive', 'actor')
+
+admin.site.register(LogFile, LogFileAdmin)
+admin.site.register(LogActor, LogActorAdmin)
+admin.site.register(LogSensor, LogSensorAdmin)

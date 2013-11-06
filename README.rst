@@ -1,7 +1,8 @@
 Alogator
 ============
 
-Alogator is an aggregated logging actor system.
+Alogator is an aggregated logging actor system. PLEASE NOTE: This Django app is in α state! Don't use it yet - unless you're ready to falling down the rabbit hole. ;-) 
+
 
 Installation
 ------------
@@ -29,27 +30,14 @@ Add ``alogator`` to your ``INSTALLED_APPS``
         'alogator',
     )
 
-Add the ``alogator`` URLs to your ``urls.py``
-
-.. code-block:: python
-
-    urlpatterns = patterns('',
-        ...
-        url(r'^alogator/', include('alogator.urls')),
-    )
-
-Before your tags/filters are available in your templates, load them by using
-
-.. code-block:: html
-
-	{% load alogator_tags %}
 
 
-Don't forget to migrate your database
+
+Don't forget to create the tables for your database
 
 .. code-block:: bash
 
-    ./manage.py migrate alogator
+    ./manage.py syncdb alogator
 
 
 Usage
@@ -58,6 +46,17 @@ Usage
 TODO: Describe usage or point to docs. Also describe available settings and
 templatetags.
 
+
+TODO
+----
+
+* Customizable temporary working dir instead of /tmp
+
+
+Histroy
+-------
+
+Please refer to CHANGELOG.txt
 
 Contribute
 ----------
