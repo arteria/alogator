@@ -31,7 +31,7 @@ class LogObserverDaemon(Daemon):
                 """
                 time.sleep(10)
                 
-                from .logwatch import logWatcher
+                from alogator.logwatch import logWatcher
                 logWatcher()
             except Exception, ex:
                 f.write("EX35: %s\n" % (str(ex),))
