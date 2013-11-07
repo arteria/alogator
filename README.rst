@@ -7,7 +7,7 @@ Alogator is an aggregated logging actor system. PLEASE NOTE: This Django app is 
 Installation
 ------------
 
-To get the latest stable release from PyPi
+To get the latest stable release from PyPi (not released yet!)
 
 .. code-block:: bash
 
@@ -43,13 +43,36 @@ Don't forget to create the tables for your database
 Usage
 -----
 
-TODO: Describe usage or point to docs. Also describe available settings and
-templatetags.
+Setup your logfiles, search patterns and actors in the admin backend.
+
+To run one (scan all logfiles for patterns) just call the ``scanlogfiles`` management command.
+
+.. code-block:: bash
+	
+	python manage.py scanlogfiles
+
+To run this continously you could setup a cronjob. For example, to run this every other minute use
+
+.. code-block:: bash
+
+	crontab -e
+	
+Than add 
+
+.. code-block:: bash
+
+	*/2 * * * * /path/to/your/manage.py scanlogfiles
+	
+You may have to activate your virtualenv depending on your setup.
+
+
+ 
+
 
 
 TODO
 ----
-* move to management command and trigger using cron, celery or whatever is required.
+
 * Customizable temporary working dir instead of /tmp
 
 

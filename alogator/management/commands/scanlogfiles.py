@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('Scanning logfiles...')
         logWatcher()
-        self.stdout.write('Done. Goodbye.')
+        self.stdout.write(' done. Good bye.')
             
  
         

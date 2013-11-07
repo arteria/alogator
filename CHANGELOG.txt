@@ -2,6 +2,6 @@
 - 
 
 === 0.1.0 === 
-- Initial commit
-- Open sourced code and made generic
+- Removed daemon and switched to managment command.
+- Open sourced code (initial version)
 
