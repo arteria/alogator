@@ -1,7 +1,9 @@
 Hi 
 
 Alogator was in action and found '{{ pattern }}' in '{{ path }}'.
-The full line was '{{ line }}'. 
+The full line containing the pattern was: 
+
+{{ line }} 
 
 Happy to help. 
 

@@ -74,7 +74,7 @@ TODO
 * Customizable subject, eg. [Alogator] (to filter inbox)
 * Add "To mute this actor, visit..." in message/email.
 * Add more actors, eg: Hipchat, Campfire, ..
-* Your ideas - discous them on the mailing list.
+* Your ideas - discuss them on the mailing list.
 
 Histroy
 -------
