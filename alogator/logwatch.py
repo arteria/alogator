@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from django.template.loader import render_to_string
+from django.core.mail import send_mail
 
 import os
 import codecs
@@ -84,11 +85,12 @@ def analyzeFile(logFileObj):
     logfile.close()
 
 
-def sendEmail(actor, line, path=""):
-    from django.core.mail import send_mail
-    targetEmail = actor.email
-    content = render_to_string("alogator/email/pattern_found.txt", {'line': line, 'path': path, })
-    send_mail('alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
+def sendEmail(sensor, line, path=""):
+    
+    targetEmail = sensor.actor.email
+    content = render_to_string("alogator/email/pattern_found.txt", {
+            'line': line, 'path': path, 'pattern': sensor.pattern })
+    send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
     logger.debug('Found pattern, send Email to' + targetEmail)
 
 
@@ -101,7 +103,7 @@ def findPattern(logfile, logFileObj, line):
             line = line.lower()
         if sensor.pattern in line:
             if sensor.actor.active and not sensor.actor.mute:
-                sendEmail(sensor.actor, line, logFileObj.path)
+                sendEmail(sensor, line, logFileObj.path)
             elif sensor.actor.active and sensor.actor.mute:
                 collectForMuted(sensor.actor, line)
 

@@ -74,7 +74,7 @@ TODO
 ----
 
 * Customizable temporary working dir instead of /tmp
-
+* Customizable subject, eg. [Alogator] (to filter inbox)
 
 Histroy
 -------

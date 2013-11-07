@@ -1,6 +1,10 @@
 Hi 
 
-Alogator was in action and found pattern X.
+Alogator was in action and found pattern the '{{ pattern }}' 
+in file '{{ path }}' 
+at line {{ line }}.
 
-File: {{ path }}
-Line: {{ line }}
+Happy to help. 
+
+
+
