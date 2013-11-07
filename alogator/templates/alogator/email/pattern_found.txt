@@ -1,10 +1,10 @@
 Hi 
 
-Alogator was in action and found pattern the '{{ pattern }}' 
-in file '{{ path }}' 
-at line {{ line }}.
+Alogator was in action and found '{{ pattern }}' in '{{ path }}'.
+The full line was '{{ line }}'. 
 
 Happy to help. 
+
 
 
 

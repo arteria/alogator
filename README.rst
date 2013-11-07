@@ -66,20 +66,28 @@ Than add
 You may have to activate your virtualenv depending on your setup.
 
 
- 
-
-
 
 TODO
 ----
 
 * Customizable temporary working dir instead of /tmp
 * Customizable subject, eg. [Alogator] (to filter inbox)
+* Add "To mute this actor, visit..." in message/email.
+* Add more actors, eg: Hipchat, Campfire, ..
+* Your ideas - discous them on the mailing list.
 
 Histroy
 -------
 
 Please refer to CHANGELOG.txt
+
+
+Mailing list
+------------
+
+If you have questions, ideas,.. about developing for Alogator feel free to ask/discuss them in this [https://groups.google.com/d/forum/alogator-developers] group. If you have questions using Alogator 
+please ask them in this [https://groups.google.com/d/forum/alogator-users] group.
+
 
 Contribute
 ----------
