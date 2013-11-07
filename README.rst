@@ -49,7 +49,7 @@ templatetags.
 
 TODO
 ----
-
+* move to management command and trigger using cron, celery or whatever is required.
 * Customizable temporary working dir instead of /tmp
 
 
