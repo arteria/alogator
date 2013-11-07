@@ -3,7 +3,7 @@ Hi
 Alogator was in action and found '{{ pattern }}' in '{{ path }}'.
 The full line containing the pattern was: 
 
-{{ line }}
+    {{ line }}
 
 Happy to help. 
 
