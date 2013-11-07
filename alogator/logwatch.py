@@ -96,7 +96,7 @@ def sendEmail(sensor, line, path=""):
 
 def findPattern(logfile, logFileObj, line):
     sensors = logFileObj.sensors.all()
-
+    line = line.replace('\n', '')
     for sensor in sensors:
         if not sensor.caseSensitive:
             sensor.pattern = sensor.pattern.lower()
