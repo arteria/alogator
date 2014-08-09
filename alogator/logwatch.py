@@ -86,12 +86,14 @@ def analyzeFile(logFileObj):
 
 
 def sendEmail(sensor, line, path=""):
-    
-    targetEmail = sensor.actor.email
-    content = render_to_string("alogator/email/pattern_found.txt", {
-            'line': line, 'path': path, 'pattern': sensor.pattern })
-    send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
-    logger.debug('Found pattern, send Email to' + targetEmail)
+    if sensor.actor:
+        targetEmail = sensor.actor.email
+        content = render_to_string("alogator/email/pattern_found.txt", {
+                'line': line, 'path': path, 'pattern': sensor.pattern })
+        send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
+        logger.debug('Found pattern, send Email to' + targetEmail)
+    else:
+        logger.error('Sensor ' + str(sensor) + ' has no actor.')
 
 
 def findPattern(logfile, logFileObj, line):
