@@ -10,7 +10,7 @@ from os.path import getsize
 from datetime import datetime
 
 import logging
-logger = logging.getLogger('django')
+logger = logging.getLogger('alogator')
 
 from .models import LogFile
 
