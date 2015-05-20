@@ -1,19 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import codecs
+import json
+from os.path import getsize
+from datetime import datetime
+
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils import timezone
 
-import os
-import codecs
-from os.path import getsize
-from datetime import datetime
+import requests
+
+from alogator import __version__ as alogator_version
 
 import logging
 logger = logging.getLogger('alogator')
 
-from .models import LogFile
+from alogator.models import LogFile
 
 PASSES = 0
 logFileObjects = LogFile.objects.all()
@@ -85,29 +90,73 @@ def analyzeFile(logFileObj):
         inactive = timezone.now() - thisModified
         inactive_secons = inactive.total_seconds()
 
-        sensors = logFileObj.sensors.filter(inactivity_threshold__isnull=False).exclude(inactivity_threshold=0)
+        sensors = logFileObj.sensors.filter(inactivityThreshold__isnull=False).exclude(inactivityThreshold=0)
         for sensor in sensors:
-            if inactive_secons > sensor.inactivity_threshold:
+            if inactive_secons > sensor.inactivityThreshold:
                 if sensor.actor.active and not sensor.actor.mute:
-                    sendEmail(sensor, "alogator inactivity_threshold reached", logFileObj.path)
+                    sendEmail(sensor, "alogator inactivityThreshold reached", logFileObj.path)
                 elif sensor.actor.active and sensor.actor.mute:
-                    collectForMuted(sensor.actor, "alogator inactivity_threshold reached")
+                    collectForMuted(sensor.actor, "alogator inactivityThreshold reached")
 
     logfile.close()
 
 
 def sendEmail(sensor, line, path=""):
-    try:
-        if sensor.actor:
+    if sensor.actor:
+        if sensor.actor.email:
             targetEmail = sensor.actor.email
             content = render_to_string("alogator/email/pattern_found.txt", {
-                    'line': line, 'path': path, 'pattern': sensor.pattern})
-            send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
-            logger.debug('Found pattern, send Email to' + targetEmail)
-        else:
-            logger.error('Sensor ' + str(sensor) + ' has no actor.')
-    except Exception, ex:
-        logger.error('sendEmail ' + str(ex))
+                'line': line,
+                'path': path,
+                'pattern': sensor.pattern
+            })
+            try:
+                send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
+            except Exception, ex:
+                logger.error('sendEmail ' + str(ex))
+            else:
+                logger.debug('Found pattern, send Email to' + targetEmail)
+        if sensor.actor.slackHook:
+            slackHook = sensor.actor.slackHook
+            slackChannel = getattr(sensor.actor, 'slackChannel', '')
+
+            text = render_to_string("alogator/email/slack_message.txt", {
+                'line': line,
+                'path': path,
+                'pattern': sensor.pattern
+            })
+            payload = {
+                'text': text,
+                'channel': slackChannel,
+                'icon_emoji': ':bangbang:',
+                'username': 'alogator',
+            }
+            print payload
+            r = requests.post(slackHook, data=json.dumps(payload))
+            if r.ok:
+                logger.debug('Slack notification: ' + slackChannel)
+            else:
+                logger.error('Slack notification failed. channel: ' + slackChannel)
+
+        if sensor.actor.postHook:
+            payload = {
+                'line': line,
+                'path': path,
+                'sensor': sensor.pk,
+                'inactivityThreshold': sensor.inactivityThreshold,
+                'caseSensitive': sensor.caseSensitive,
+                'actor': sensor.actor.pk,
+                'log': sensor.logfile_set.get().pk,
+                'version': alogator_version,
+            }
+            r = requests(sensor.actor.postHook, data=json.dumps(payload))
+            if r.ok:
+                logger.debug('Hock post ' + sensor.actor.post_hock)
+            else:
+                logger.error('Hock post failed ' + sensor.actor.post_hock)
+
+    else:
+        logger.error('Sensor ' + str(sensor) + ' has no actor.')
 
 
 def findPattern(logfile, logFileObj, line):

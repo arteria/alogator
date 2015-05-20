@@ -1,0 +1,4 @@
+{% if line == "alogator inactivityThreshold reached" %}The inactivity threshold for {% if pattern %}`{{ pattern }}` in {% endif %}`{{ path }}` has been exceeded.{% else %}Alogator was in action and found `{{ pattern }}` in `{{ path }}`.
+The full line containing the pattern was: 
+`{{ line }}`
+{% endif %}
