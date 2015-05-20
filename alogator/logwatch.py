@@ -3,6 +3,7 @@
 
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from django.utils import timezone
 
 import os
 import codecs
@@ -43,7 +44,7 @@ def analyzeFile(logFileObj):
     try:
         logfile = codecs.open(logFilename, 'r', 'utf-8')
     except Exception, e:
-        logger.error("EX42: "+ str(e))
+        logger.error("EX42: " + str(e))
         # TODO: set to mute
         return False
 
@@ -54,6 +55,7 @@ def analyzeFile(logFileObj):
 
     fileStats = os.stat(logFilename)
     thisModified = datetime.fromtimestamp(fileStats.st_mtime)
+    thisModified = timezone.make_aware(thisModified, timezone.get_default_timezone())
 
     if not lastModified:
         lastModified = thisModified
@@ -80,7 +82,17 @@ def analyzeFile(logFileObj):
         logFileObj.lastModified = thisModified
         logFileObj.save()
     else:
-        pass
+        inactive = timezone.now() - thisModified
+        inactive_secons = inactive.total_seconds()
+
+        sensors = logFileObj.sensors.filter(inactivity_threshold__isnull=False).exclude(inactivity_threshold=0)
+        print sensors
+        for sensor in sensors:
+            if inactive_secons > sensor.inactivity_threshold:
+                if sensor.actor.active and not sensor.actor.mute:
+                    sendEmail(sensor, "alogator inactivity_threshold reached", logFileObj.path)
+                elif sensor.actor.active and sensor.actor.mute:
+                    collectForMuted(sensor.actor, "alogator inactivity_threshold reached")
 
     logfile.close()
 
@@ -90,7 +102,7 @@ def sendEmail(sensor, line, path=""):
         if sensor.actor:
             targetEmail = sensor.actor.email
             content = render_to_string("alogator/email/pattern_found.txt", {
-                    'line': line, 'path': path, 'pattern': sensor.pattern })
+                    'line': line, 'path': path, 'pattern': sensor.pattern})
             send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
             logger.debug('Found pattern, send Email to' + targetEmail)
         else:
@@ -104,8 +116,8 @@ def findPattern(logfile, logFileObj, line):
     for sensor in sensors:
         if not sensor.caseSensitive:
             sensor.pattern = sensor.pattern.lower()
-            line = line.lower()
-        if sensor.pattern in line:
+            n_line = line.lower()
+        if sensor.pattern in n_line:
             if sensor.actor.active and not sensor.actor.mute:
                 sendEmail(sensor, line, logFileObj.path)
             elif sensor.actor.active and sensor.actor.mute:
@@ -143,8 +155,8 @@ def collectForMuted(actor, line):
 
 
 # helper function for debugging
-def writeToFile(text):
-    f = open("/tmp/alogator-debug.log", 'a')
+def writeToFile(text, path="/tmp/alogator-debug.log"):
+    f = open(path, 'a')
     f.write(text + '\n')
     f.flush()
 
