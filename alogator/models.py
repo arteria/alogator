@@ -1,16 +1,16 @@
 from django.db import models
 
-from datetime import datetime 
+from datetime import datetime
 
 
 class LogActor(models.Model):
-    email = models.CharField(max_length=100, 
-            blank=True, 
-            null=True, 
+    email = models.CharField(max_length=100,
+            blank=True,
+            null=True,
             help_text='Alogator will send a messages to this email address.')
     active = models.BooleanField(default=True)
     mute = models.BooleanField(default=False, help_text="suppress for notification")
-    
+
     def __unicode__(self):
         return 'email to: %s' % (self.email)
 
@@ -37,6 +37,8 @@ class LogSensor(models.Model):
     caseSensitive = models.BooleanField(default=False)
     actor = models.ForeignKey(LogActor)
 
+    inactivity_threshold = models.IntegerField(default=0, null=True, blank=True)
+
     def __unicode__(self):
         return 'search for: %s' % (self.pattern)
 
@@ -50,4 +52,3 @@ class LogFile(models.Model):
 
     def __unicode__(self):
         return self.path
- 
