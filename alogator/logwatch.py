@@ -86,7 +86,6 @@ def analyzeFile(logFileObj):
         inactive_secons = inactive.total_seconds()
 
         sensors = logFileObj.sensors.filter(inactivity_threshold__isnull=False).exclude(inactivity_threshold=0)
-        print sensors
         for sensor in sensors:
             if inactive_secons > sensor.inactivity_threshold:
                 if sensor.actor.active and not sensor.actor.mute:
@@ -110,13 +109,15 @@ def sendEmail(sensor, line, path=""):
     except Exception, ex:
         logger.error('sendEmail ' + str(ex))
 
+
 def findPattern(logfile, logFileObj, line):
     sensors = logFileObj.sensors.all()
     line = line.replace('\n', '')
     for sensor in sensors:
+        n_line = line
         if not sensor.caseSensitive:
             sensor.pattern = sensor.pattern.lower()
-            n_line = line.lower()
+            n_line = n_line.lower()
         if sensor.pattern in n_line:
             if sensor.actor.active and not sensor.actor.mute:
                 sendEmail(sensor, line, logFileObj.path)
