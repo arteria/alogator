@@ -1,5 +1,7 @@
 from django.db import models
+
 from django.core.mail import send_mail
+from django.core.exceptions import DoesNotExist
 
 from django.utils import timezone
 
