@@ -24,22 +24,27 @@ class LogActor(models.Model):
         return "/tmp/alogator_actor_%s_muted" % self.id
 
     def save(self, *args, **kwargs):
-        if self.__class__.objects.get(pk=self.pk).mute and not self.mute:
-            try:
-                f = open(self.getMutedFilename(), 'r')
-                content = f.read()
-            except:
-                content = "Muted file " + self.getMutedFilename() + " does not exist."
-            send_mail(
-                'ALOGATOR: Muged logs for: %s' % self.getMutedFilename(),
-                content,
-                'debug@arteria.ch',
-                [self.email],
-                fail_silently=True
-            )
+        try:
+            orig = self.__class__.objects.get(pk=self.pk)
+        except DoesNotExist:
+            pass
+        else:
+            if orig.mute and not self.mute:
+                try:
+                    f = open(self.getMutedFilename(), 'r')
+                    content = f.read()
+                except:
+                    content = "Muted file " + self.getMutedFilename() + " does not exist."
+                send_mail(
+                    'ALOGATOR: Muged logs for: %s' % self.getMutedFilename(),
+                    content,
+                    'debug@arteria.ch',
+                    [self.email],
+                    fail_silently=True
+                )
 
-            f = open(self.getMutedFilename(), 'a')
-            f.flush()
+                f = open(self.getMutedFilename(), 'a')
+                f.flush()
         super(LogActor, self).save(*args, **kwargs)  # Call the "real" save() method.
 
 
