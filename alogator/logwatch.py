@@ -172,7 +172,7 @@ def findPattern(logfile, logFileObj, line):
         if not sensor.caseSensitive:
             sensor.pattern = sensor.pattern.lower()
             n_line = n_line.lower()
-        if sensor.pattern in n_line:
+        if sensor.pattern and sensor.pattern in n_line:
             if sensor.actor.active and not sensor.actor.mute:
                 sendNotification(sensor, line, logFileObj.path)
             elif sensor.actor.active and sensor.actor.mute:
