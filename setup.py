@@ -64,4 +64,5 @@ setup(
     extras_require={
         'dev': dev_requires,
     },
+    scripts=['alogator/alogator_cli'],
 )
