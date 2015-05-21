@@ -95,7 +95,7 @@ def analyzeFile(logFileObj):
 
         sensors = logFileObj.sensors.filter(inactivityThreshold__isnull=False).exclude(inactivityThreshold=0)
         for sensor in sensors:
-            if inactive_secons > sensor.inactivityThreshold:
+            if inactive_secons > sensor.inactivityThreshold and not sensor.inactive:
                 sensor.inactive = True
                 sensor.save()
                 if sensor.actor.active and not sensor.actor.mute:

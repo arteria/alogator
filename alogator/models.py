@@ -60,7 +60,7 @@ class LogFile(models.Model):
     lastModified = models.DateTimeField(default=timezone.now, blank=True)
     lastPosition = models.IntegerField(default=0)
     lastSize = models.IntegerField(default=0)
-    sensors = models.ManyToManyField(LogSensor, null=True, blank=True)
+    sensors = models.ManyToManyField(LogSensor, blank=True)
 
     def __unicode__(self):
         return self.path
