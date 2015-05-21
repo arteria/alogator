@@ -1,7 +1,6 @@
 from django.db import models
 
 from django.core.mail import send_mail
-from django.core.exceptions import DoesNotExist
 
 from django.utils import timezone
 
@@ -28,7 +27,7 @@ class LogActor(models.Model):
     def save(self, *args, **kwargs):
         try:
             orig = self.__class__.objects.get(pk=self.pk)
-        except DoesNotExist:
+        except self.DoesNotExist:
             pass
         else:
             if orig.mute and not self.mute:
