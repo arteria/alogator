@@ -70,6 +70,9 @@ def analyzeFile(logFileObj):
     thisPosition = lastPosition
 
     if thisModified != lastModified:  # file was modified
+        for sensor in logFileObj.sensors.all():
+            sensor.inactive = False
+            sensor.save()
         if thisSize > lastSize:  # file got bigger
             # go from last position to end and search for Keywords
             logfile.seek(lastPosition)
@@ -93,6 +96,8 @@ def analyzeFile(logFileObj):
         sensors = logFileObj.sensors.filter(inactivityThreshold__isnull=False).exclude(inactivityThreshold=0)
         for sensor in sensors:
             if inactive_secons > sensor.inactivityThreshold:
+                sensor.inactive = True
+                sensor.save()
                 if sensor.actor.active and not sensor.actor.mute:
                     sendEmail(sensor, "alogator inactivityThreshold reached", logFileObj.path)
                 elif sensor.actor.active and sensor.actor.mute:
@@ -149,11 +154,11 @@ def sendEmail(sensor, line, path=""):
                 'log': sensor.logfile_set.get().pk,
                 'version': alogator_version,
             }
-            r = requests(sensor.actor.postHook, data=json.dumps(payload))
+            r = requests.post(sensor.actor.postHook, data=json.dumps(payload))
             if r.ok:
-                logger.debug('Hock post ' + sensor.actor.post_hock)
+                logger.debug('Hock post ' + sensor.actor.postHook)
             else:
-                logger.error('Hock post failed ' + sensor.actor.post_hock)
+                logger.error('Hock post failed ' + sensor.actor.postHook)
 
     else:
         logger.error('Sensor ' + str(sensor) + ' has no actor.')

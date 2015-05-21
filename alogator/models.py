@@ -49,6 +49,7 @@ class LogSensor(models.Model):
     actor = models.ForeignKey(LogActor)
 
     inactivityThreshold = models.IntegerField(default=0, null=True, blank=True)
+    inactive = models.BooleanField(default=False)
 
     def __unicode__(self):
         return 'search for: %s' % (self.pattern)
