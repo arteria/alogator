@@ -99,14 +99,14 @@ def analyzeFile(logFileObj):
                 sensor.inactive = True
                 sensor.save()
                 if sensor.actor.active and not sensor.actor.mute:
-                    sendEmail(sensor, "alogator inactivityThreshold reached", logFileObj.path)
+                    sendNotification(sensor, "alogator inactivityThreshold reached", logFileObj.path)
                 elif sensor.actor.active and sensor.actor.mute:
                     collectForMuted(sensor.actor, "alogator inactivityThreshold reached")
 
     logfile.close()
 
 
-def sendEmail(sensor, line, path=""):
+def sendNotification(sensor, line, path=""):
     if sensor.actor:
         if sensor.actor.email:
             targetEmail = sensor.actor.email
@@ -118,7 +118,7 @@ def sendEmail(sensor, line, path=""):
             try:
                 send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
             except Exception, ex:
-                logger.error('sendEmail ' + str(ex))
+                logger.error('sendNotification ' + str(ex))
             else:
                 logger.debug('Found pattern, send Email to' + targetEmail)
         if sensor.actor.slackHook:
@@ -174,7 +174,7 @@ def findPattern(logfile, logFileObj, line):
             n_line = n_line.lower()
         if sensor.pattern in n_line:
             if sensor.actor.active and not sensor.actor.mute:
-                sendEmail(sensor, line, logFileObj.path)
+                sendNotification(sensor, line, logFileObj.path)
             elif sensor.actor.active and sensor.actor.mute:
                 collectForMuted(sensor.actor, line)
 
