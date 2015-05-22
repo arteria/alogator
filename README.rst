@@ -10,7 +10,7 @@ Alogator is an aggregated logging actor system.
 Installation
 ------------
 
-To get the latest stable release from PyPi (not released yet!)
+To get the latest stable release from PyPi
 
 .. code-block:: bash
 
@@ -22,7 +22,7 @@ To get the latest commit from GitHub
 
     pip install -e git+git://github.com/arteria/alogator.git#egg=alogator
 
-TODO: Describe further installation steps (edit / remove the examples below):
+.. TODO: Describe further installation steps (edit / remove the examples below):
 
 Add ``alogator`` to your ``INSTALLED_APPS`` and define a logger
 
