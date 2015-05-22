@@ -1,7 +1,11 @@
 === (ongoing) ===
 - 
 
+=== 0.2.0 === 
+- Add treshold for inactivity
+- Add slack hook
+- Add aditional hook
+
 === 0.1.0 === 
 - Removed daemon and switched to managment command.
 - Open sourced code (initial version)
-
