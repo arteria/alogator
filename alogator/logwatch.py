@@ -48,7 +48,7 @@ def analyzeFile(logFileObj):
 
     try:
         logfile = codecs.open(logFilename, 'r', 'utf-8')
-    except Exception, e:
+    except Exception as e:
         logger.error("EX42: " + str(e))
         # TODO: set to mute
         return False
@@ -117,7 +117,7 @@ def sendNotification(sensor, line, path=""):
             })
             try:
                 send_mail('Alogator: pattern found', content, 'debug@arteria.ch', [targetEmail], fail_silently=True)
-            except Exception, ex:
+            except Exception as ex:
                 logger.error('sendNotification ' + str(ex))
             else:
                 logger.debug('Found pattern, send Email to' + targetEmail)
@@ -136,7 +136,7 @@ def sendNotification(sensor, line, path=""):
                 'icon_emoji': ':bangbang:',
                 'username': 'alogator',
             }
-            print payload
+            print(payload)
             r = requests.post(slackHook, data=json.dumps(payload))
             if r.ok:
                 logger.debug('Slack notification: ' + slackChannel)

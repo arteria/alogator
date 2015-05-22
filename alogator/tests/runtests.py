@@ -11,7 +11,7 @@ import sys
 
 from django.conf import settings
 
-import test_settings
+from . import test_settings
 
 
 if not settings.configured:
