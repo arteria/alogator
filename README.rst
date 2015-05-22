@@ -1,7 +1,7 @@
 Alogator
 ============
 
-Alogator is an aggregated logging actor system. PLEASE NOTE: This Django app is in α state! Don't use it yet - unless you're ready to falling down the rabbit hole. ;-) 
+Alogator is an aggregated logging actor system.
 
 
 .. contents:: Table of Contents
