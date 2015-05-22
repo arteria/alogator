@@ -38,6 +38,7 @@ dev_requires = [
 
 install_requires = [
     'django',
+    'requests',
 ]
 
 
@@ -65,4 +66,17 @@ setup(
         'dev': dev_requires,
     },
     scripts=['alogator/alogator_cli'],
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+       'Framework :: Django',
+       'License :: OSI Approved :: MIT License',
+       'Framework :: Django',
+       'Framework :: Django :: 1.4',
+       'Framework :: Django :: 1.5',
+       'Framework :: Django :: 1.6',
+       'Framework :: Django :: 1.7',
+       'Framework :: Django :: 1.8',
+       'Programming Language :: Python',
+       'Programming Language :: Python :: 2',
+    ]
 )
