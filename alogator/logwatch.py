@@ -136,7 +136,6 @@ def sendNotification(sensor, line, path=""):
                 'icon_emoji': ':bangbang:',
                 'username': 'alogator',
             }
-            print(payload)
             r = requests.post(slackHook, data=json.dumps(payload))
             if r.ok:
                 logger.debug('Slack notification: ' + slackChannel)
