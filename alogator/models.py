@@ -54,7 +54,7 @@ class LogSensor(models.Model):
     caseSensitive = models.BooleanField(default=False)
     actor = models.ForeignKey(LogActor)
 
-    inactivityThreshold = models.IntegerField(default=0, null=True, blank=True)
+    inactivityThreshold = models.IntegerField(default=0, null=True, blank=True, help_text="Inactivity threshold in seconds.")
     inactive = models.BooleanField(default=False)
 
     def __unicode__(self):
