@@ -69,7 +69,18 @@ def analyzeFile(logFileObj):
         lastPosition = 0
     thisPosition = lastPosition
 
-    if thisModified != lastModified:  # file was modified
+    was_modified = False
+    try:
+        if thisModified != lastModified:
+            was_modified = True
+    except:
+        lastModified = timezone.make_aware(lastModified, timezone.get_default_timezone())
+        if thisModified != lastModified:
+            was_modified = True
+
+
+
+    if was_modified:  # file was modified
         for sensor in logFileObj.sensors.all():
             sensor.inactive = False
             sensor.save()
