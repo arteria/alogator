@@ -1,0 +1,6 @@
+[run]
+source = alogator
+omit = alogator/migrations/*
+
+[report]
+fail_under = 35

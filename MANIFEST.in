@@ -3,7 +3,8 @@ include LICENSE
 include DESCRIPTION
 include CHANGELOG.txt
 include README.md
-graft alogator
+include requirements.txt
+recursive-include alogator *.html *.png *.gif *js *.css *jpg *jpeg *svg *py
+recursive-include alogator/static *
+recursive-include alogator/templates *
 global-exclude *.orig *.pyc *.log *.swp
-prune alogator/tests/coverage
-prune alogator/.ropeproject

@@ -1,0 +1,8 @@
+[FORMAT]
+indent-string='    '
+
+disable=R,C
+
+reports=no
+
+max-line-length=120

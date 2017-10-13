@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from alogator.logwatch import logWatcher
 
 class Command(BaseCommand):
@@ -9,6 +9,3 @@ class Command(BaseCommand):
         self.stdout.write('Scanning logfiles...')
         logWatcher()
         self.stdout.write(' done. Good bye.')
-            
- 
-        

@@ -16,7 +16,7 @@ DATABASES = {
     }
 }
 
-ROOT_URLCONF = 'alogator.tests.urls'
+ROOT_URLCONF = 'tests.urls'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(APP_ROOT, '../app_static')
@@ -29,14 +29,7 @@ TEMPLATE_DIRS = (
     os.path.join(APP_ROOT, 'tests/test_app/templates'),
 )
 
-COVERAGE_REPORT_HTML_OUTPUT_DIR = os.path.join(
-    os.path.join(APP_ROOT, 'tests/coverage'))
-COVERAGE_MODULE_EXCLUDES = [
-    'tests$', 'settings$', 'urls$', 'locale$',
-    'migrations', 'fixtures', 'admin$', 'django_extensions',
-]
-
-EXTERNAL_APPS = [
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.admindocs',
     'django.contrib.auth',
@@ -46,16 +39,9 @@ EXTERNAL_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.sites',
-    'django_jasmine',
-    'django_nose',
-]
 
-INTERNAL_APPS = [
     'alogator',
-    'alogator.tests.test_app',
+    'tests.test_app',
 ]
-
-INSTALLED_APPS = EXTERNAL_APPS + INTERNAL_APPS
-COVERAGE_MODULE_EXCLUDES += EXTERNAL_APPS
 
 SECRET_KEY = 'foobar'
